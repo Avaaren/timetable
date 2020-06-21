@@ -18,8 +18,8 @@ class TimetableAdmin(admin.ModelAdmin):
 class GroupAdmin(admin.ModelAdmin):
     
     class Meta:
-        list_display = ['name',]
-        list_filter = ['name',]
+        list_display = ['number',]
+        list_filter = ['number',]
 
 @admin.register(Cabinet)
 class TimetableAdmin(admin.ModelAdmin):
