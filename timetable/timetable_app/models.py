@@ -57,7 +57,7 @@ class Timetable(models.Model):
     group = models.ForeignKey(Group, related_name='timetables', on_delete=models.CASCADE)
     cabinet = models.ForeignKey(Cabinet, related_name='timetables', on_delete=models.CASCADE)
     name_of_class = models.ForeignKey(Class, related_name='timetables', on_delete=models.CASCADE)
-    number_of_class = models.PositiveSmallIntegerField(max_length=3)
+    number_of_class = models.PositiveSmallIntegerField()
 
     class Meta:
         verbose_name='Расписание'
