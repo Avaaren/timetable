@@ -35,7 +35,6 @@ class Group(models.Model):
 class Cabinet(models.Model):
     '''Model with cabinets and their status'''
     number = models.CharField(max_length=5)
-    is_free = models.BooleanField(default=True)
 
     class Meta:
         verbose_name='Кабинет'
