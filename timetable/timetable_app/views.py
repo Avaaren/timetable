@@ -33,8 +33,16 @@ class AddTimetableView(CreateAPIView):
 
 
     serializer_class = TimetableSerializer
-    # queryset = Timetable.objects.all()
+    queryset = Timetable.objects.all()
     
     def post(self, request, *args, **kwargs):
         print(request.data)
         return self.create(request, *args, **kwargs)
+
+
+class EditTimetableView(RetrieveUpdateDestroyAPIView):
+
+    serializer_class = TimetableSerializer
+    
+    def get_object(self):
+        return get_object_or_404(Timetable, pk=self.kwargs.get('pk'))
