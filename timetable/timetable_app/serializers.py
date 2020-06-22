@@ -29,7 +29,7 @@ class CabinetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cabinet
-        fields = ['number', 'is_free']
+        fields = ['number',]
 
 class TimetableSerializer(serializers.ModelSerializer):
     group = GroupSerializer()
@@ -52,3 +52,9 @@ class TimetableSerializer(serializers.ModelSerializer):
         timetable = Timetable.objects.create(group=group, day=day[0], cabinet=cabinet, name_of_class=name_of_class, number_of_class=number_of_class)
         
         return timetable
+
+    def update(self, instance, validated_data):
+        instance.cabinet = Cabinet.objects.get(number=validated_data['cabinet']['number'])
+        instance.name_of_class = Class.objects.get(name=validated_data['name_of_class']['name'])
+        instance.save()
+        return instance
