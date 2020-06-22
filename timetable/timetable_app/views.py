@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
     ListAPIView,
     ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
+    RetrieveUpdateAPIView,
+    RetrieveDestroyAPIView,
     CreateAPIView,
 )
 from .models import (
@@ -40,9 +41,17 @@ class AddTimetableView(CreateAPIView):
         return self.create(request, *args, **kwargs)
 
 
-class EditTimetableView(RetrieveUpdateDestroyAPIView):
+class EditTimetableView(RetrieveUpdateAPIView):
 
     serializer_class = TimetableSerializer
     
+    def get_object(self):
+        return get_object_or_404(Timetable, pk=self.kwargs.get('pk'))
+
+
+class DeleteTimetableView(RetrieveDestroyAPIView):
+
+    serializer_class = TimetableSerializer
+
     def get_object(self):
         return get_object_or_404(Timetable, pk=self.kwargs.get('pk'))
