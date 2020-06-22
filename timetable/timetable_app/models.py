@@ -1,5 +1,5 @@
 from django.db import models
-
+from slugify import slugify
 
 class Day(models.Model):
     '''Model with date and day of week'''
@@ -17,6 +17,7 @@ class Day(models.Model):
 class Group(models.Model):
     '''Model with number of group'''
     number = models.CharField(max_length=6)
+    slug = models.SlugField(max_length=10, default='empty')
 
     class Meta:
         verbose_name='Группа'
@@ -24,6 +25,11 @@ class Group(models.Model):
 
     def __str__(self):
         return f'Группа {self.number}'
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.number)
+        super(Group, self).save(*args, **kwargs)
+
 
 
 class Cabinet(models.Model):
