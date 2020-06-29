@@ -15,13 +15,13 @@ from .serializers import TimetableSerializer
 from .services.database_services import validate_day
 
 class GetTimetableView(ListAPIView):
-
+    """Getting list of all timetables"""
     queryset = Timetable.objects.all()
     serializer_class = TimetableSerializer
 
 
 class GroupTimetableView(ListAPIView):
-
+    """Getting list of timetables by group"""
     serializer_class = TimetableSerializer
 
     def get_queryset(self):
@@ -31,7 +31,7 @@ class GroupTimetableView(ListAPIView):
 
 
 class AddTimetableView(CreateAPIView):
-
+    """Creating new timetable by post request"""
     #After adding - redirect to timetable list for group
     serializer_class = TimetableSerializer
     queryset = Timetable.objects.all()
@@ -41,7 +41,7 @@ class AddTimetableView(CreateAPIView):
         return super(CreateAPIView, self).create(request, *args, **kwargs)
 
 class EditTimetableView(RetrieveUpdateAPIView):
-
+    """Editing existed timetable (only cabinet and name of class)"""
     serializer_class = TimetableSerializer
     
     def get_object(self):
@@ -49,7 +49,7 @@ class EditTimetableView(RetrieveUpdateAPIView):
 
 
 class DeleteTimetableView(RetrieveDestroyAPIView):
-
+    """Deliting existed timetable"""
     serializer_class = TimetableSerializer
 
     def get_object(self):
