@@ -14,7 +14,7 @@ from .models import (
 from .serializers import TimetableSerializer
 
 
-class GetTimetableView(ListCreateAPIView):
+class GetTimetableView(ListAPIView):
 
     queryset = Timetable.objects.all()
     serializer_class = TimetableSerializer
@@ -32,14 +32,10 @@ class GroupTimetableView(ListAPIView):
 
 class AddTimetableView(CreateAPIView):
 
-
+    #After adding - redirect to timetable list for group
     serializer_class = TimetableSerializer
     queryset = Timetable.objects.all()
     
-    def post(self, request, *args, **kwargs):
-        print(request.data)
-        return self.create(request, *args, **kwargs)
-
 
 class EditTimetableView(RetrieveUpdateAPIView):
 
