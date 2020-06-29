@@ -8,6 +8,9 @@ from .models import (
 )
 import dateutil.parser
 from datetime import datetime
+from .services.database_services import check_cabinet
+
+
 class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -55,14 +58,13 @@ class TimetableSerializer(serializers.ModelSerializer):
     # в какой либо из дней нельзя было его на этот же день поставить
     def create(self, validated_data):
         group = validated_data['group']
-        print(validated_data)
         day = validated_data['day']
-        
         cabinet = validated_data['cabinet']
         name_of_class = validated_data['name_of_class']
         number_of_class = validated_data['number_of_class']
+
+        check_cabinet(cabinet, day, number_of_class)
         timetable = Timetable.objects.create(group=group, day=day, cabinet=cabinet, name_of_class=name_of_class, number_of_class=number_of_class)
-        
         return timetable
 
     def update(self, instance, validated_data):
@@ -70,4 +72,3 @@ class TimetableSerializer(serializers.ModelSerializer):
         instance.name_of_class = Class.objects.get(name=validated_data['name_of_class']['name'])
         instance.save()
         return instance
-
