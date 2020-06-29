@@ -21,6 +21,17 @@ class TimetableList extends Component {
         });
     }
 
+    handleDelete = (e, id) => {
+        var self = this;
+        console.log(id);
+        timetableService.deleteTimetable(id).then(() => {
+            var newArr = self.state.timetables.filter(function (obj) {
+                return obj.id !== id;
+            });
+            self.setState({ customers: newArr })
+        });
+    }
+
     render() {
 
         return (
@@ -38,13 +49,16 @@ class TimetableList extends Component {
                     </thead>
                     <tbody>
                         {this.state.timetables.map(c =>
-                            <tr key={c.pk}>
-                                <td>{c.pk}  </td>
+                            <tr key={c.id}>
+                                <td>{c.id}  </td>
                                 <td>{c.number_of_class}</td>
                                 <td>{c.group}</td>
                                 <td>{c.day}</td>
                                 <td>{c.name_of_class}</td>
                                 <td>{c.cabinet}</td>
+                                <td>
+                                    <button onClick={(e) => this.handleDelete(e, c.id)}> Delete</button>
+                                </td>
                             </tr>)}
                     </tbody>
                 </table>
