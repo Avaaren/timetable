@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'timetable_app.apps.TimetableAppConfig',
     # 3rd party
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -39,6 +40,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'timetable.urls'
@@ -115,7 +117,13 @@ REST_FRAMEWORK = {
 'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S", 
 "DATE_INPUT_FORMATS": ["%Y-%m-%d"],
 }
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
+
+
 
 STATIC_URL = '/static/'
