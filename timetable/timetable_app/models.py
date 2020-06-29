@@ -2,20 +2,30 @@ from django.db import models
 from slugify import slugify
 
 class Day(models.Model):
+    DAY_OF_WEEK = (
+        (0,'ПН'),
+        (1,'ВТ'),
+        (2,'СР'),
+        (3,'ЧТ'),
+        (4,'ПТ'),
+        (5,'СБ'),
+        (6,'ВС'),
+
+    )
     '''Model with date and day of week'''
     day = models.DateField()
-    day_of_week = models.CharField(max_length=10)
+    day_of_week = models.CharField(max_length=10, choices=DAY_OF_WEEK)
 
     class Meta:
         verbose_name = 'День'
         verbose_name_plural = 'Дни'
 
     def __str__(self):
-        return f'{self.day_of_week}-{self.day}'
+        return f'{self.day}'
 
 
 class Group(models.Model):
-    '''Model with number of group'''
+    '''Model with number of students group'''
     number = models.CharField(max_length=6)
     slug = models.SlugField(max_length=10, default='empty')
 
