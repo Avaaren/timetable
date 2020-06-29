@@ -6,7 +6,8 @@ from .models import (
     Class,
     Cabinet
 )
-
+import dateutil.parser
+from datetime import datetime
 class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -32,24 +33,35 @@ class CabinetSerializer(serializers.ModelSerializer):
         fields = ['number',]
 
 class TimetableSerializer(serializers.ModelSerializer):
-    group = GroupSerializer()
-    day = DaySerializer()
-    name_of_class = ClassSerializer()
-    cabinet = CabinetSerializer()
+    group = serializers.SlugRelatedField(
+        queryset=Group.objects.all(), allow_null=False, required=True, slug_field='number'
+    )
+    day = serializers.SlugRelatedField(
+        queryset=Day.objects.all(), allow_null=False, required=True, slug_field='day'
+    )
+    name_of_class = serializers.SlugRelatedField(
+        queryset=Class.objects.all(), allow_null=False, required=True, slug_field='name'
+    )
+    cabinet = serializers.SlugRelatedField(
+        queryset=Cabinet.objects.all(), allow_null=False, required=True, slug_field='number'
+    )
 
     class Meta:
         model = Timetable
         fields = ['id', 'number_of_class', 'group', 'day', 'name_of_class', 'cabinet']
+
+
     # Объект создается. Сделать проверку существование get() полей. Сделайть чтобы при занятии кабинета
     # в какой либо из дней нельзя было его на этот же день поставить
     def create(self, validated_data):
-        group = Group.objects.get(number=validated_data['group']['number'])
-        day = validated_data.pop('day')
-        day = Day.objects.get_or_create(day=day['day'], day_of_week=day['day_of_week'])
-        cabinet = Cabinet.objects.get(number=validated_data['cabinet']['number'])
-        name_of_class = Class.objects.get(name=validated_data['name_of_class']['name'])
+        group = validated_data['group']
+        print(validated_data)
+        day = validated_data['day']
+        
+        cabinet = validated_data['cabinet']
+        name_of_class = validated_data['name_of_class']
         number_of_class = validated_data['number_of_class']
-        timetable = Timetable.objects.create(group=group, day=day[0], cabinet=cabinet, name_of_class=name_of_class, number_of_class=number_of_class)
+        timetable = Timetable.objects.create(group=group, day=day, cabinet=cabinet, name_of_class=name_of_class, number_of_class=number_of_class)
         
         return timetable
 
@@ -58,3 +70,4 @@ class TimetableSerializer(serializers.ModelSerializer):
         instance.name_of_class = Class.objects.get(name=validated_data['name_of_class']['name'])
         instance.save()
         return instance
+
