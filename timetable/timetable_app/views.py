@@ -12,7 +12,7 @@ from .models import (
     Group
 )
 from .serializers import TimetableSerializer
-
+from .services.database_services import validate_day
 
 class GetTimetableView(ListAPIView):
 
@@ -36,6 +36,9 @@ class AddTimetableView(CreateAPIView):
     serializer_class = TimetableSerializer
     queryset = Timetable.objects.all()
     
+    def create(self, request, *args, **kwargs):
+        validate_day(request.data['day'])
+        return super(CreateAPIView, self).create(request, *args, **kwargs)
 
 class EditTimetableView(RetrieveUpdateAPIView):
 
