@@ -8,9 +8,9 @@ export default class TimetableService{
 
     getTimetables() {
         const url = `${API_URL}/api/timetable/`;
-        return axios.get(url).then(response => response.data);
+        return axios.get(url).then(response => {console.log(response.data); return response.data});
     }
-    getTimetablesByGroup(link){
+    getTimetablesByGroup(group_slug){
         const url = `${API_URL}/api/timetable/${group_slug}`;
         return axios.get(url).then(response => response.data);
     }
